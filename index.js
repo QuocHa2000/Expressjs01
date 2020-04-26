@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser')
 var app = express();
 var db = require('./db');
 
+var authMiddleware = require('./middleware/auth.middleware');
 var userRoute = require('./routes/user.route');
 var authRoute = require('./routes/auth.route');
 app.set('view engine', 'pug');
@@ -21,7 +22,7 @@ app.get('/',function(req,res){
         name : 'Quoc'
     });
 })
-app.use('/users',userRoute);
+app.use('/users',authMiddleware.authRequire,userRoute);
 app.use('/auth',authRoute);
 
 app.listen(port,function(){
