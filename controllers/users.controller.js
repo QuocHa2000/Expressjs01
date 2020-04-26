@@ -17,6 +17,7 @@ module.exports.search = function(req,res){
     });
 };
 module.exports.get = function(req,res){
+    console.log(req.cookies);
     res.render('users/create');
 };
 module.exports.view = function(req,res){
