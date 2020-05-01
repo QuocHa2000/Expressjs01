@@ -1,3 +1,4 @@
+var shortid = require('shortid');
 var db = require('../db');
 
 module.exports.login = function(req,res){
@@ -21,6 +22,31 @@ module.exports.postLogin = function(req,res){
         })
         return;
     }
-    res.cookie('userId',user.id);
+    res.cookie('userId',user.id,{
+        signed : true 
+    });
     res.redirect('/users');
+};
+module.exports.register = function(req,res){
+    res.render('auth/register');
 }
+module.exports.postRegister = function(req,res){
+    var userDB = db.get('users').find({email:req.body.email}).value();
+    if(userDB) {
+        res.render('auth/register',{
+            errors:['Email existed.'],
+            values : req.body
+        });
+        return;
+    }
+    if(req.body.password!==req.body.password2){
+        res.render('auth/register',{
+            errors: ['Nhập lại mật khẩu không đúng'],
+            values:req.body
+        });
+        return;
+    }
+    req.body.id = shortid.generate();
+    db.get('users').push(req.body).write();
+    res.redirect('/auth/login');
+};

@@ -15,6 +15,18 @@ html
                 a.nav-item.nav-link(href='#') Features
                 a.nav-item.nav-link(href='#') Cart #{num}
                 a.nav-item.nav-link.disabled(href='#', tabindex='-1', aria-disabled='true') Disabled
-                
+
         .container
-            block content
+            h1 ProDucts
+            .row
+                each product in products
+                    .col-sm-6.col-md-4.col-lg-3
+                        .card.mb-4  
+                            img(src="product.image", alt="",class="card-img-top")
+                            .card-body
+                                h5.card-title=product.name
+                                p.card-text=product.description
+                                a.btn.btn-primary(href="/cart/add/" + product.id)  Add to the cart
+    
+    
+
